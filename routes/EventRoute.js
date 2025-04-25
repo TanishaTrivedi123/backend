@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const EventModel = require("../models/Event");
 const upload = require("../middleware/upload");
+const cloudinary = require("../Cloudinary");
 
 router.post("/addevent", upload.single("image"), async (req, res) => {
   console.log("File received:", req.file); // Check if file is being sent
