@@ -7,7 +7,7 @@ const cloudinary = require("../Cloudinary");
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: "your_folder_name", // Cloudinary folder where images will be stored
+    folder: "events", // Cloudinary folder where images will be stored
     allowed_formats: ["jpg", "jpeg", "png"],
     transformation: [{ width: 500, height: 500, crop: "limit" }], // optional
   },
