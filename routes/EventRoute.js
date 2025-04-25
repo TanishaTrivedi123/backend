@@ -4,9 +4,10 @@ const EventModel = require("../models/Event");
 const upload = require("../middleware/upload");
 
 router.post("/addevent", upload.single("image"), async (req, res) => {
+  console.log("File received:", req.file); // Check if file is being sent
   try {
     const { title, date, description } = req.body;
-    const imagePath = req.file ? req.file.path : null; //multer image se path lega
+    const imagePath = req.file ? req.file.path : null; // Path received from multer
 
     if (!title || !date || !imagePath) {
       return res
@@ -14,12 +15,16 @@ router.post("/addevent", upload.single("image"), async (req, res) => {
         .json({ error: "All fields are required", success: false });
     }
 
+    const cloudinaryResult = await cloudinary.uploader.upload(req.file.path);
+    console.log("Cloudinary upload result:", cloudinaryResult);
+
     const newEvent = new EventModel({
       title,
       date,
-      image: imagePath,
+      image: cloudinaryResult.secure_url, // Cloudinary image URL
       description,
     });
+
     await newEvent.save();
     res.status(201).json({
       message: "Event added successfully!",
@@ -27,8 +32,9 @@ router.post("/addevent", upload.single("image"), async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.log(error);
+    console.error("Error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 module.exports = router;
