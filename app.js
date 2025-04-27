@@ -11,25 +11,23 @@ dotenv.config();
 connectDB();
 
 // ✅ Updated and detailed CORS config for frontend
-// const allowedOrigins = ["https://frontend1-beige.vercel.app"];
+const allowedOrigins = ["https://frontend1-beige.vercel.app"];
 
 // CORS middleware
-// app.use(
-//   cors({
-//     origin: (origin, callback) => {
-//       if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-//         callback(null, true); // Allow the request
-//       } else {
-//         callback(new Error("CORS not allowed by this server"), false); // Block the request
-//       }
-//     },
-//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-//     allowedHeaders: ["Content-Type", "Authorization"],
-//     credentials: true, // If you use cookies or sessions
-//   })
-// );
-
-app.use(cors());
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        callback(null, true); // Allow the request
+      } else {
+        callback(new Error("CORS not allowed by this server"), false); // Block the request
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true, // If you use cookies or sessions
+  })
+);
 
 // ✅ Handle JSON and URL-encoded payloads with size limits
 app.use(express.json({ limit: "20mb" }));
